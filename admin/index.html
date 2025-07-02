@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RJ First Class Delivery - Customer Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/profile.css" type="text/css" media="all" />
+  <style>
+          @media (max-width: 768px) {
+          .form-grid {
+            grid-template-columns: 1fr; /* Stack on small screens */
+          }
+        
+          .form-grid-full,
+          .form-grid-2col,
+          .span-2 {
+            grid-column: span 3;
+          }
+        }
+
+      .form-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+          gap: 1rem;
+          width: 100%;
+          max-width: 100%; /* Stretch across available space */
+        }
+        
+        .form-grid-full {
+          grid-column: span 3; /* Full width */
+        }
+        
+        .form-grid-2col {
+          grid-column: span 2; /* Optional two-column span */
+        }
+        
+        .span-2 {
+          grid-column: span 2; /* For time picker */
+        }
+
+  </style>
+</head>
+
+<body>
+  <!-- Login Page -->
+  <div id="loginPage" class="auth-container" style="display: none;">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <h1>RJ First Class</h1>
+        <h4>DELIVERY</h4>
+        <p>Welcome Back!</p>
+      </div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail">Email Address</label>
+          <input type="email" id="loginEmail" name="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" name="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+      </form>
+      <div class="auth-link">
+        Don't have an account? <a href="#" onclick="showRegister()">Sign Up</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register Page -->
+  <div id="registerPage" class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <h1>RJ First Class</h1>
+        <h4>DELIVERY</h4>
+        <p>Create Your Account</p>
+      </div>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="first_name" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="last_name" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" class="form-control" placeholder="(999) 999-9999" required>
+        </div>
+        <div class="form-group">
+          <label for="address">Street Address</label>
+          <input type="text" id="address" name="address" class="form-control" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" id="state" name="state" class="form-control" maxlength="2" placeholder="FL" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="zipCode">ZIP Code</label>
+          <input type="text" id="zipCode" name="zip" class="form-control" placeholder="12345" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" class="form-control" required>
+          <small class="form-text text-muted">At least 8 characters with uppercase, lowercase, and numbers</small>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" name="confirm_password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+      </form>
+      <div class="auth-link">
+        Already have an account? <a href="#" onclick="showLogin()">Sign In</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="dashboard-container" style="display: none;">
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h2>RJ First Class</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" onclick="showSection('profile')">
+          <i class="fas fa-user"></i> Profile
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('schedule')">
+          <i class="fas fa-calendar"></i> Schedule
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('payment')">
+          <i class="fas fa-credit-card"></i> Payment
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('services')">
+          <i class="fas fa-truck"></i> Services
+        </a>
+      </nav>
+      <div class="logout-btn">
+        <button class="btn btn-secondary btn-block" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Profile Section -->
+      <section id="profileSection" class="content-section">
+        <div class="content-header">
+          <h1>My Profile</h1>
+        </div>
+
+        <div class="content-card">
+          <div class="profile-header">
+            <div class="profile-avatar">
+              <div class="avatar-img" id="avatarImg">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="avatar-upload" onclick="uploadAvatar()">
+                <i class="fas fa-camera"></i>
+              </div>
+              <input type="file" id="avatarInput" style="display: none;" accept="image/*">
+            </div>
+            <div class="profile-info">
+              <h2 id="profileName">Loading...</h2>
+              <p id="profileEmail">Loading...</p>
+            </div>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Email Address</label>
+              <div class="info-value">
+                <span id="emailValue">Loading...</span>
+                <a href="#" class="edit-btn" onclick="editField('email')">Edit</a>
+              </div>
+            </div>
+            <div class="info-item">
+              <label>Phone Number</label>
+              <div class="info-value">
+                <span id="phoneValue">Loading...</span>
+                <a href="#" class="edit-btn" onclick="editField('phone')">Edit</a>
+              </div>
+            </div>
+            <div class="info-item">
+              <label>Address</label>
+              <div class="info-value">
+                <span id="addressValue">Loading...</span>
+                <a href="#" class="edit-btn" onclick="editField('address')">Edit</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Schedule Section -->
+      <section id="scheduleSection" class="content-section" style="display: none;">
+        <div class="content-header">
+          <h1>My Schedule</h1>
+          <button class="btn btn-primary" onclick="showServiceModal()">
+            <i class="fas fa-plus"></i> Add Service Request
+          </button>
+        </div>
+
+        <div class="content-card">
+          <div class="job-filters">
+            <button class="filter-btn active" onclick="filterJobs('all')">All</button>
+            <button class="filter-btn" onclick="filterJobs('active')">Active</button>
+            <button class="filter-btn" onclick="filterJobs('completed')">Completed</button>
+            <button class="filter-btn" onclick="filterJobs('cancelled')">Cancelled</button>
+          </div>
+
+          <div class="job-list" id="jobList">
+            <!-- Jobs will be loaded dynamically -->
+            <div class="loading">
+              <i class="fas fa-spinner fa-spin"></i> Loading appointments...
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Payment Section -->
+      <section id="paymentSection" class="content-section" style="display: none;">
+        <div class="content-header">
+          <h1>Payment Methods</h1>
+          <button class="btn btn-primary" onclick="showAddPaymentModal()">
+            <i class="fas fa-plus"></i> Add Payment Method
+          </button>
+        </div>
+
+        <div class="content-card">
+          <div class="payment-methods" id="paymentMethods">
+            <!-- Payment methods will be loaded dynamically -->
+            <div class="loading">
+              <i class="fas fa-spinner fa-spin"></i> Loading payment methods...
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services Section -->
+      <section id="servicesSection" class="content-section" style="display: none;">
+        <div class="content-header">
+          <h1>Available Services</h1>
+        </div>
+
+        <div class="content-card">
+          <div class="services-grid" id="servicesGrid">
+            <!-- Services will be loaded dynamically -->
+            <div class="loading">
+              <i class="fas fa-spinner fa-spin"></i> Loading services...
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Service Request Modal -->
+  <div id="serviceModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>New Service Request</h2>
+        <button class="modal-close" onclick="closeModal('serviceModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="service-form" id="serviceRequestForm">
+          <div class="form-group">
+            <label>Select Service</label>
+            <select class="form-control" id="serviceType" name="service_id" required>
+              <option value="">Choose a service...</option>
+              <!-- Options will be loaded dynamically -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Preferred Date</label>
+            <input type="date" class="form-control" id="serviceDate" name="appointment_date" required>
+          </div>
+
+          <div class="form-group">
+            <label>Preferred Time</label>
+            <div class="time-picker">
+              <div class="time-slot" onclick="selectTime(this)">8:00 AM</div>
+              <div class="time-slot" onclick="selectTime(this)">9:00 AM</div>
+              <div class="time-slot" onclick="selectTime(this)">10:00 AM</div>
+              <div class="time-slot" onclick="selectTime(this)">11:00 AM</div>
+              <div class="time-slot" onclick="selectTime(this)">12:00 PM</div>
+              <div class="time-slot" onclick="selectTime(this)">1:00 PM</div>
+              <div class="time-slot" onclick="selectTime(this)">2:00 PM</div>
+              <div class="time-slot" onclick="selectTime(this)">3:00 PM</div>
+            </div>
+            <input type="hidden" id="appointmentTime" name="appointment_time">
+          </div>
+
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="differentLocation" onchange="toggleLocationFields()">
+              Use different pickup location
+            </label>
+          </div>
+
+          <div id="locationFields" style="display: none;">
+            <div class="form-group">
+              <label>Pickup Address</label>
+              <input type="text" class="form-control" id="pickupAddress" name="pickup_address">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>City</label>
+                <input type="text" class="form-control" id="pickupCity" name="pickup_city">
+              </div>
+              <div class="form-group">
+                <label>State</label>
+                <input type="text" class="form-control" id="pickupState" name="pickup_state" maxlength="2">
+              </div>
+              <div class="form-group">
+                <label>ZIP</label>
+                <input type="text" class="form-control" id="pickupZip" name="pickup_zip">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Delivery Address</label>
+            <input type="text" class="form-control" id="deliveryAddress" name="delivery_address" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" class="form-control" id="deliveryCity" name="delivery_city" required>
+            </div>
+            <div class="form-group">
+              <label>State</label>
+              <input type="text" class="form-control" id="deliveryState" name="delivery_state" maxlength="2" required>
+            </div>
+            <div class="form-group">
+              <label>ZIP</label>
+              <input type="text" class="form-control" id="deliveryZip" name="delivery_zip" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Special Instructions</label>
+            <textarea class="form-control" rows="3" id="specialInstructions" name="special_instructions"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('serviceModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="proceedToPayment()">Continue to Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Options Modal -->
+  <div id="paymentOptionsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Payment Options</h2>
+        <button class="modal-close" onclick="closeModal('paymentOptionsModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="service-summary" style="background: var(--light-gray); padding: 1rem; border-radius: 5px; margin-bottom: 2rem;">
+          <h3>Service Summary</h3>
+          <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+            <span>Service:</span>
+            <span id="summaryService">-</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+            <span>Date:</span>
+            <span id="summaryDate">-</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+            <span>Time:</span>
+            <span id="summaryTime">-</span>
+          </div>
+          <hr style="margin: 1rem 0;">
+          <div style="display: flex; justify-content: space-between; font-weight: bold;">
+            <span>Total:</span>
+            <span id="summaryTotal">$0.00</span>
+          </div>
+        </div>
+
+        <h3>Choose Payment Option</h3>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div class="payment-option" onclick="selectPaymentOption(this, 'deposit')">
+            <h4>Pay 50% Deposit</h4>
+            <p>Pay <span id="depositAmount">$0.00</span> now, remaining balance on delivery</p>
+          </div>
+          <div class="payment-option" onclick="selectPaymentOption(this, 'full')">
+            <h4>Pay Full Amount</h4>
+            <p>Pay <span id="fullAmount">$0.00</span> now</p>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 2rem;">
+          <label>Add a tip (optional)</label>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
+            <button class="btn btn-secondary" onclick="setTip(0)">No tip</button>
+            <button class="btn btn-secondary" onclick="setTip(10)">$10</button>
+            <button class="btn btn-secondary" onclick="setTip(20)">$20</button>
+            <input type="number" class="form-control" placeholder="Custom" id="customTip" onchange="setCustomTip()">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Select Payment Method</label>
+          <select class="form-control" id="paymentMethodSelect">
+            <!-- Options will be loaded dynamically -->
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('paymentOptionsModal')">Back</button>
+        <button class="btn btn-primary" onclick="confirmBooking()">
+          <i class="fas fa-lock"></i> Confirm & Pay
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Field Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content" style="max-width: 400px;">
+      <div class="modal-header">
+        <h2 id="editModalTitle">Edit Field</h2>
+        <button class="modal-close" onclick="closeModal('editModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm">
+          <div id="singleFieldEdit">
+            <div class="form-group">
+              <label id="editFieldLabel">Field</label>
+              <input type="text" class="form-control" id="editFieldInput">
+            </div>
+          </div>
+          <div id="addressFieldsEdit" style="display: none;">
+            <div class="form-group">
+              <label>Street Address</label>
+              <input type="text" class="form-control" id="editAddress" name="address">
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" class="form-control" id="editCity" name="city">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>State</label>
+                <input type="text" class="form-control" id="editState" name="state" maxlength="2">
+              </div>
+              <div class="form-group">
+                <label>ZIP</label>
+                <input type="text" class="form-control" id="editZip" name="zip">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('editModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveFieldEdit()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Payment Method Modal -->
+  <div id="addPaymentModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add Payment Method</h2>
+        <button class="modal-close" onclick="closeModal('addPaymentModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info" style="background: #E0F2FE; color: #0369A1; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+          <i class="fas fa-info-circle"></i> Your card information is encrypted and secure.
+        </div>
+        <form id="addPaymentForm">
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" class="form-control" name="card_number" placeholder="1234 5678 9012 3456" maxlength="19" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Expiry Date</label>
+              <input type="text" class="form-control" name="expiry" placeholder="MM/YY" maxlength="5" required>
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="text" class="form-control" name="cvv" placeholder="123" maxlength="4" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Name on Card</label>
+            <input type="text" class="form-control" name="card_name" required>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" name="set_default"> Set as default payment method
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('addPaymentModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="savePaymentMethod()">Add Card</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/profile.js"></script>
+  <script>
+    // Configuration
+    const API_BASE_URL = '../assets/php';
+    let csrfToken = null;
+    let currentUser = null;
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Set minimum date for service booking
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('serviceDate').min = today;
+
+      // Check session
+      await checkSession();
+    });
+
+    // Check user session
+    async function checkSession() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/check_session.php`);
+        const data = await response.json();
+        
+        if (data.logged_in) {
+          currentUser = data.user;
+          showDashboard();
+          updateUserInterface();
+          loadInitialData();
+        } else {
+          showLogin();
+        }
+      } catch (error) {
+        console.error('Session check failed:', error);
+        showLogin();
+      }
+    }
+
+    // Get CSRF token
+    async function getCsrfToken() {
+      if (!csrfToken) {
+        try {
+          const response = await fetch(`${API_BASE_URL}/get_csrf_token.php`);
+          const data = await response.json();
+          csrfToken = data.token;
+        } catch (error) {
+          console.error('Failed to get CSRF token:', error);
+        }
+      }
+      return csrfToken;
+    }
+
+    // Update user interface with current user data
+    function updateUserInterface() {
+      if (!currentUser) return;
+
+      document.getElementById('profileName').textContent = currentUser.name;
+      document.getElementById('profileEmail').textContent = currentUser.email;
+      document.getElementById('emailValue').textContent = currentUser.email;
+      
+      // Load additional user details via AJAX
+      loadUserProfile();
+    }
+
+    // Load user profile details
+    async function loadUserProfile() {
+      try {
+        const formData = new FormData();
+        formData.append('action', 'get_profile');
+        formData.append('csrf_token', await getCsrfToken());
+
+        const response = await fetch(`${API_BASE_URL}/ajax_handler.php`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        
+        if (data.success && data.profile) {
+          document.getElementById('phoneValue').textContent = formatPhone(data.profile.phone);
+          document.getElementById('addressValue').textContent = formatAddress(data.profile);
+          
+          // Update avatar if exists
+          if (data.profile.profile_photo) {
+            document.getElementById('avatarImg').innerHTML = 
+              `<img src="/uploads/profiles/${data.profile.profile_photo}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+      }
+    }
+
+    // Load initial data based on current section
+    function loadInitialData() {
+      loadServices(); // Always load services for dropdown
+      
+      if (currentSection === 'schedule') {
+        loadSchedule();
+      } else if (currentSection === 'payment') {
+        loadPaymentMethods();
+      }
+    }
+
+    // Format phone number
+    function formatPhone(phone) {
+      if (!phone) return 'Not provided';
+      const cleaned = phone.replace(/\D/g, '');
+      if (cleaned.length === 10) {
+        return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+      }
+      return phone;
+    }
+
+    // Format address
+    function formatAddress(profile) {
+      if (!profile.address_line1) return 'Not provided';
+      return `${profile.address_line1}, ${profile.city}, ${profile.state} ${profile.zip_code}`;
+    }
+
+    // Register form handler
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Validate passwords match
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
+
+      const formData = new FormData(this);
+      formData.append('action', 'register');
+      formData.append('csrf_token', await getCsrfToken());
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/ajax_handler.php`, {
+          method: 'POST',
+          body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alert(data.message);
+          if (data.redirect) {
+            window.location.reload(); // Reload to check session
+          }
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (error) {
+        alert('Network error. Please try again.');
+        console.error(error);
+      }
+    });
+
+    // Login form handler
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      formData.append('action', 'login');
+      formData.append('csrf_token', await getCsrfToken());
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/ajax_handler.php`, {
+          method: 'POST',
+          body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          window.location.reload(); // Reload to check session
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (error) {
+        alert('Network error. Please try again.');
+        console.error(error);
+      }
+    });
+
+    // Avatar upload handler
+    document.getElementById('avatarInput').addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      // Check file size (5MB limit)
+      if (file.size > 5242880) {
+        alert('File size must be less than 5MB');
+        return;
+      }
+      
+      const formData = new FormData();
+      formData.append('action', 'upload_avatar');
+      formData.append('avatar', file);
+      formData.append('csrf_token', await getCsrfToken());
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/ajax_handler.php`, {
+          method: 'POST',
+          body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alert(data.message);
+          // Update avatar display
+          document.getElementById('avatarImg').innerHTML = 
+            `<img src="/uploads/profiles/${data.filename}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (error) {
+        alert('Upload failed. Please try again.');
+        console.error(error);
+      }
+    });
+
+    // Load services
+    async function loadServices() {
+      try {
+        const formData = new FormData();
+        formData.append('action', 'get_services');
+        formData.append('csrf_token', await getCsrfToken());
+
+        const response = await fetch(`${API_BASE_URL}/ajax_handler.php`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        
+        if (data.success && data.services) {
+          // Update service dropdown
+          const serviceSelect = document.getElementById('serviceType');
+          serviceSelect.innerHTML = '<option value="">Choose a service...</option>';
+          
+          data.services.forEach(service => {
+            const option = document.createElement('option');
+            option.value = service.service_id;
+            option.textContent = `${service.service_name} - From $${service.base_price}`;
+            option.dataset.price = service.base_price;
+            serviceSelect.appendChild(option);
+          });
+
+          // Update services grid
+          if (currentSection === 'services') {
+            updateServicesGrid(data.services);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load services:', error);
+      }
+    }
+
+    // Update field edit
+    async function saveFieldEdit() {
+      const field = document.getElementById('editFieldInput').dataset.field;
+      
+      const formData = new FormData();
+      formData.append('action', 'update_profile');
+      formData.append('csrf_token', await getCsrfToken());
+      
+      if (field === 'address') {
+        // Handle address fields
+        formData.append('field', 'address');
+        formData.append('address', document.getElementById('editAddress').value);
+        formData.append('city', document.getElementById('editCity').value);
+        formData.append('state', document.getElementById('editState').value);
+        formData.append('zip', document.getElementById('editZip').value);
+      } else {
+        // Handle single field
+        formData.append('field', field);
+        formData.append('value', document.getElementById('editFieldInput').value);
+      }
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/ajax_handler.php`, {
+          method: 'POST',
+          body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alert(data.message);
+          closeModal('editModal');
+          loadUserProfile(); // Reload profile data
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (error) {
+        alert('Update failed. Please try again.');
+        console.error(error);
+      }
+    }
+
+    // Load schedule
+    async function loadSchedule() {
+      try {
+        const formData = new FormData();
+        formData.append('action', 'get_schedule');
+        formData.append('csrf_token', await getCsrfToken());
+
+        const response = await fetch(`${API_BASE_URL}/ajax_handler.php`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          updateScheduleList(data.appointments || []);
+        }
+      } catch (error) {
+        console.error('Failed to load schedule:', error);
+      }
+    }
+
+    // Update schedule list
+    function updateScheduleList(appointments) {
+      const jobList = document.getElementById('jobList');
+      
+      if (appointments.length === 0) {
+        jobList.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-clipboard-list"></i>
+            <h3>No Services Yet</h3>
+            <p>You haven't had any service yet</p>
+            <button class="btn btn-primary" onclick="showServiceModal()">Book Your First Service</button>
+          </div>
+        `;
+        return;
+      }
+
+      jobList.innerHTML = appointments.map(apt => `
+        <div class="job-card">
+          <div class="job-info">
+            <h3>${apt.service_name}</h3>
+            <div class="job-meta">
+              <span><i class="fas fa-calendar"></i> ${formatDate(apt.appointment_date)}</span>
+              <span><i class="fas fa-clock"></i> ${apt.appointment_time}</span>
+              <span><i class="fas fa-map-marker-alt"></i> ${apt.pickup_city} to ${apt.delivery_city}</span>
+            </div>
+          </div>
+          <span class="job-status ${getStatusClass(apt.status_name)}">${apt.status_name}</span>
+        </div>
+      `).join('');
+    }
+
+    // Format date
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    // Get status class
+    function getStatusClass(status) {
+      const statusMap = {
+        'Completed': 'status-completed',
+        'In Progress': 'status-in-route',
+        'Confirmed': 'status-confirmed',
+        'Pending': 'status-pending',
+        'Cancelled': 'status-cancelled'
+      };
+      return statusMap[status] || 'status-pending';
+    }
+
+    // Load payment methods
+    async function loadPaymentMethods() {
+      try {
+        const formData = new FormData();
+        formData.append('action', 'get_payment_methods');
+        formData.append('csrf_token', await getCsrfToken());
+
+        const response = await fetch(`${API_BASE_URL}/ajax_handler.php`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          updatePaymentMethodsList(data.payment_methods || []);
+          updatePaymentDropdown(data.payment_methods || []);
+        }
+      } catch (error) {
+        console.error('Failed to load payment methods:', error);
+      }
+    }
+
+    // Update payment methods list
+    function updatePaymentMethodsList(methods) {
+      const paymentMethods = document.getElementById('paymentMethods');
+      
+      let html = methods.map(method => `
+        <div class="payment-card ${method.is_default ? 'default' : ''}">
+          ${method.is_default ? '<span class="default-badge">Default</span>' : ''}
+          <div class="card-brand">
+            <i class="fab fa-cc-${method.card_brand.toLowerCase()}"></i>
+          </div>
+          <div class="card-number">•••• •••• •••• ${method.card_last_four}</div>
+          <div class="card-expiry">Expires ${method.expiry_month}/${method.expiry_year}</div>
+        </div>
+      `).join('');
+
+      // Add new card button
+      html += `
+        <div class="payment-card" style="border-style: dashed; display: flex; align-items: center; justify-content: center; min-height: 150px; cursor: pointer;" onclick="showAddPaymentModal()">
+          <div style="text-align: center; color: var(--gray);">
+            <i class="fas fa-plus" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+            <p>Add New Card</p>
+          </div>
+        </div>
+      `;
+
+      paymentMethods.innerHTML = html;
+    }
+
+    // Update payment dropdown
+    function updatePaymentDropdown(methods) {
+      const select = document.getElementById('paymentMethodSelect');
+      select.innerHTML = methods.map(method => 
+        `<option value="${method.id}">${method.card_brand} ending in ${method.card_last_four}</option>`
+      ).join('');
+      select.innerHTML += '<option value="new">Add new card...</option>';
+    }
+
+    // Update services grid
+    function updateServicesGrid(services) {
+      const servicesGrid = document.getElementById('servicesGrid');
+      
+      servicesGrid.innerHTML = services.map(service => `
+        <div class="service-item">
+          <div class="service-icon">
+            <i class="${getServiceIcon(service.service_name)}"></i>
+          </div>
+          <h3>${service.service_name}</h3>
+          <p>${service.service_description}</p>
+          <div class="service-price">From ${service.base_price}</div>
+        </div>
+      `).join('');
+    }
+
+    // Get service icon
+    function getServiceIcon(serviceName) {
+      const iconMap = {
+        'Apartment Moving': 'fas fa-home',
+        'Transport Cargo': 'fas fa-box',
+        'Pallet Load': 'fas fa-pallet',
+        'Tire Transport': 'fas fa-truck',
+        'Dumpster Site Clean Up': 'fas fa-dumpster'
+      };
+      return iconMap[serviceName] || 'fas fa-truck';
+    }
+
+    // Create booking
+    async function confirmBooking() {
+      const serviceId = document.getElementById('serviceType').value;
+      const appointmentDate = document.getElementById('serviceDate').value;
+      const appointmentTime = document.getElementById('appointmentTime').value;
+
+      if (!serviceId || !appointmentDate || !appointmentTime) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      const formData = new FormData(document.getElementById('serviceRequestForm'));
+      formData.append('action', 'create_booking');
+      formData.append('csrf_token', await getCsrfToken());
+      formData.append('payment_option', selectedPaymentOption);
+      formData.append('tip_amount', tipAmount);
+
+      // Use user's address if not using different location
+      if (!document.getElementById('differentLocation').checked) {
+        // These will be filled from user's profile on backend
+        formData.append('use_profile_address', 'true');
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/ajax_handler.php`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          alert(`Booking confirmed! Your confirmation number is: ${data.confirmation_number}`);
+          closeModal('paymentOptionsModal');
+          closeModal('serviceModal');
+          
+          // Reload schedule if on that page
+          if (currentSection === 'schedule') {
+            loadSchedule();
+          }
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (error) {
+        alert('Booking failed. Please try again.');
+        console.error(error);
+      }
+    }
+
+    // Save payment method
+    async function savePaymentMethod() {
+      const form = document.getElementById('addPaymentForm');
+      const formData = new FormData(form);
+      formData.append('action', 'add_payment_method');
+      formData.append('csrf_token', await getCsrfToken());
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/ajax_handler.php`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          alert('Payment method added successfully');
+          closeModal('addPaymentModal');
+          loadPaymentMethods(); // Reload payment methods
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (error) {
+        alert('Failed to add payment method. Please try again.');
+        console.error(error);
+      }
+    }
+
+    // Filter jobs
+    function filterJobs(filter) {
+      // Update active button
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      // In production, this would filter the appointments
+      // For now, just reload with filter parameter
+      loadSchedule(filter);
+    }
+
+    // Edit field
+    function editField(field) {
+      const modal = document.getElementById('editModal');
+      const title = document.getElementById('editModalTitle');
+      const input = document.getElementById('editFieldInput');
+      
+      input.dataset.field = field;
+
+      if (field === 'address') {
+        // Show address fields
+        document.getElementById('singleFieldEdit').style.display = 'none';
+        document.getElementById('addressFieldsEdit').style.display = 'block';
+        
+        title.textContent = 'Edit Address';
+        
+        // Parse current address
+        const currentAddress = document.getElementById('addressValue').textContent;
+        if (currentAddress !== 'Not provided') {
+          // This is simplified - in production, store address components separately
+          const parts = currentAddress.split(', ');
+          document.getElementById('editAddress').value = parts[0] || '';
+          document.getElementById('editCity').value = parts[1] || '';
+          // Parse state and zip
+          const stateZip = (parts[2] || '').split(' ');
+          document.getElementById('editState').value = stateZip[0] || '';
+          document.getElementById('editZip').value = stateZip[1] || '';
+        }
+      } else {
+        // Show single field
+        document.getElementById('singleFieldEdit').style.display = 'block';
+        document.getElementById('addressFieldsEdit').style.display = 'none';
+        
+        switch(field) {
+          case 'email':
+            title.textContent = 'Edit Email';
+            input.type = 'email';
+            input.value = document.getElementById('emailValue').textContent;
+            break;
+          case 'phone':
+            title.textContent = 'Edit Phone';
+            input.type = 'tel';
+            input.value = document.getElementById('phoneValue').textContent.replace(/\D/g, '');
+            break;
+        }
+      }
+
+      showModal('editModal');
+    }
+
+    // Logout
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        window.location.href = `${API_BASE_URL}/logout.php`;
+      }
+    }
+  </script>
+</body>
+</html>

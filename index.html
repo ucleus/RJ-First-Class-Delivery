@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RJ First Class Delivery - Your Trusted Courier Service</title>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/styles.css" type="text/css" media="all" />
+  <script>
+    // Check if user is logged in on page load
+    document.addEventListener('DOMContentLoaded', async function() {
+        try {
+            const response = await fetch('/assets/php/check_session.php');
+            const data = await response.json();
+            
+            if (data.logged_in) {
+                // User is logged in, show dashboard
+                showDashboard();
+                
+                // Update user info
+                document.getElementById('profileName').textContent = data.user.name;
+                document.getElementById('profileEmail').textContent = data.user.email;
+                document.getElementById('emailValue').textContent = data.user.email;
+            } else {
+                // User not logged in, show login page
+                showLogin();
+            }
+        } catch (error) {
+            console.error('Session check failed:', error);
+            showLogin();
+        }
+    });
+    
+    // Update logout function
+    function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+            window.location.href = '/assets/php/logout.php';
+        }
+    }
+</script>
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <nav>
+      <div class="logo">RJ First Class</div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#booking">Book Now</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>RJ First Class Delivery</h1>
+      <p>Swift, Secure, and Reliable Logistics Solutions from A to Z</p>
+      <a href="#booking" class="cta-button">Book Your Delivery Now</a>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services" id="services">
+    <div class="container">
+      <h2 class="section-title">Our Services</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon"><i class="fas fa-home"></i></div>
+          <h3>Apartment Moving</h3>
+          <p>Professional moving services for apartments of all sizes. We handle your belongings with care.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><i class="fas fa-box"></i></div>
+          <h3>Transport Cargo</h3>
+          <p>Secure cargo transportation for businesses and individuals. Any size, any distance.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><i class="fas fa-pallet"></i></div>
+          <h3>Pallet Load</h3>
+          <p>Efficient pallet loading and transportation services for warehouses and businesses.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><i class="fas fa-truck"></i></div>
+          <h3>Tire Transport</h3>
+          <p>Specialized tire transportation for dealers, shops, and automotive businesses.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><i class="fas fa-dumpster"></i></div>
+          <h3>Dumpster Site Clean Up</h3>
+          <p>Complete dumpster and construction site cleanup services. Fast and thorough.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Calendar Section -->
+  <section class="booking" id="booking">
+    <div class="booking-container">
+      <div>
+        <h2 class="section-title">Book Your Delivery</h2>
+        <p>Select a date and time that works best for you. Our team will confirm your appointment within 24 hours.</p>
+        <form id="bookingForm" style="margin-top: 2rem;">
+          <input type="text" placeholder="Your Name" style="width: 100%; padding: 1rem; margin-bottom: 1rem; border: 1px solid var(--gray); border-radius: 5px;">
+          <input type="email" placeholder="Your Email" style="width: 100%; padding: 1rem; margin-bottom: 1rem; border: 1px solid var(--gray); border-radius: 5px;">
+          <input type="tel" placeholder="Phone Number" style="width: 100%; padding: 1rem; margin-bottom: 1rem; border: 1px solid var(--gray); border-radius: 5px;">
+          <select style="width: 100%; padding: 1rem; margin-bottom: 1rem; border: 1px solid var(--gray); border-radius: 5px;">
+            <option>Select Service</option>
+            <option>Apartment Moving</option>
+            <option>Transport Cargo</option>
+            <option>Pallet Load</option>
+            <option>Tire Transport</option>
+            <option>Dumpster Site Clean Up</option>
+          </select>
+          <button type="submit" class="cta-button" style="width: 100%; border: none; cursor: pointer;">Book Appointment</button>
+        </form>
+      </div>
+      <div class="calendar">
+        <div class="calendar-header">
+          <button id="prevMonth" style="background: none; border: none; cursor: pointer; font-size: 1.5rem;"><i class="fas fa-chevron-left"></i></button>
+          <h3 id="currentMonth">December 2024</h3>
+          <button id="nextMonth" style="background: none; border: none; cursor: pointer; font-size: 1.5rem;"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid">
+          <!-- Calendar will be generated by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Infographic Section -->
+  <section class="infographic">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="process-steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Book Online</h3>
+          <p>Choose your service and preferred date through our easy booking system</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Get Confirmation</h3>
+          <p>Receive instant confirmation with pickup details and tracking information</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>We Pick Up</h3>
+          <p>Our professional team arrives on time to collect your items safely</p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Track & Deliver</h3>
+          <p>Real-time tracking until your items reach their destination safely</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="about-content">
+      <div class="about-image">
+        <img src="./assets/images/about.jpg" alt="RJ First Class Delivery">
+      </div>
+      <div>
+        <h2 class="section-title">About RJ First Class Delivery</h2>
+        <p>With over 10 years of experience in the logistics industry, RJ First Class Delivery has built a reputation for reliability, professionalism, and exceptional customer service. We understand that every delivery is important, which is why we treat each shipment with the utmost care and attention.</p>
+        <div class="contact-info">
+          <div class="contact-item">
+            <i class="fas fa-phone"></i> <strong>Phone:</strong> (954) 317-8913
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i> <strong>Email:</strong> richie@rjfirstclassdelivery.com
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i> <strong>Tri County Address Served:</strong> Palm Beach | Ft. Lauderdale | Miami
+          </div>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-x-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <h2 class="section-title">Our Pricing Plans</h2>
+      <div class="pricing-cards">
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3>Basic Delivery</h3>
+            <p class="price">$49</p>
+            <p>Per delivery</p>
+          </div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> Local delivery (up to 25 miles)</li>
+            <li><i class="fas fa-check"></i> Standard packaging</li>
+            <li><i class="fas fa-check"></i> Email notifications</li>
+            <li><i class="fas fa-check"></i> Business hours delivery</li>
+          </ul>
+          <a href="#booking" class="cta-button" style="width: 100%; text-align: center;">Choose Plan</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-header">
+            <h3>Professional</h3>
+            <p class="price">$99</p>
+            <p>Per delivery</p>
+          </div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> Regional delivery (up to 100 miles)</li>
+            <li><i class="fas fa-check"></i> Premium packaging included</li>
+            <li><i class="fas fa-check"></i> Real-time tracking</li>
+            <li><i class="fas fa-check"></i> Priority handling</li>
+            <li><i class="fas fa-check"></i> Weekend delivery available</li>
+            <li><i class="fas fa-check"></i> Insurance coverage</li>
+          </ul>
+          <a href="#booking" class="cta-button" style="width: 100%; text-align: center;">Choose Plan</a>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3>Enterprise</h3>
+            <p class="price">Custom</p>
+            <p>Contact for quote</p>
+          </div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> Nationwide delivery</li>
+            <li><i class="fas fa-check"></i> Dedicated account manager</li>
+            <li><i class="fas fa-check"></i> Custom packaging solutions</li>
+            <li><i class="fas fa-check"></i> 24/7 support</li>
+            <li><i class="fas fa-check"></i> Volume discounts</li>
+            <li><i class="fas fa-check"></i> API integration</li>
+          </ul>
+          <a href="#contact" class="cta-button" style="width: 100%; text-align: center;">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="footer-content">
+      <div class="social-links" style="justify-content: center;">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-x-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+      <div class="footer-links">
+        <a href="#">Terms of Agreement</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Cookies</a>
+      </div>
+      <p>&copy; 2024 RJ First Class Delivery. All rights reserved.</p>
+      <p>Built with <i class="fas fa-heart" style="color: var(--red);"></i> by AI and <a style="color: #fff; text-decoration: none;" href="https://seanblake.info" target="_blank">Sean</a></p>
+    </div>
+  </footer>
+
+  <!-- Email Modal -->
+  <div class="modal" id="emailModal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <h2>Don't Miss Out on Special Offers!</h2>
+      <p>Subscribe to our newsletter for exclusive deals and delivery updates.</p>
+      <form class="modal-form" id="emailForm">
+        <input type="email" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+  <script src="assets/js/scripts.js" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>

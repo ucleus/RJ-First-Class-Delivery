@@ -1,0 +1,39 @@
+# Protect PHP files
+<Files *.php>
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Allow specific PHP files
+<Files "ajax_handler.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+<Files "get_csrf_token.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+<Files "check_session.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+# Protect uploads directory
+<Directory "/public_html/uploads">
+    Order Deny,Allow
+    Deny from all
+</Directory>
+
+# Force HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
